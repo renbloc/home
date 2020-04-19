@@ -17,11 +17,11 @@ export default function App() {
       <Router history={browserHistory}>
         <Routes />
       </Router>
-      <CookieConsent
+      {/* <CookieConsent
         debug={true}
       >
         This website uses cookies to enhance the user experience.
-      </CookieConsent>
+      </CookieConsent> */}
     </React.Fragment>
 
 

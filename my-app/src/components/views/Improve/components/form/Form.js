@@ -8,7 +8,6 @@ import FormPref from './FormPref'
 import FormExp from './FormExp';
 import FormDetails from './FormDetails';
 
-import Wolf from '../../files/face.jpeg'
 
 
 export default function Form() {
@@ -42,7 +41,7 @@ export default function Form() {
                         nextStep={nextStep}
                         Data={FirstName}
                         setData={setFirstName}
-                        header="DOGGY"
+                        header="Before we jump in, what's your first name?"
                         placeholder="First Name"
 
                     />
@@ -143,11 +142,13 @@ export default function Form() {
     }
 
     return (
-        <div style={{ 
-            backgroundImage: `url(${Wolf})`, 
-            height: '100vh', 
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'bottom right', }}>
+        <div
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
             {form()}
         </div>
     );
