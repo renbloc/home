@@ -6,13 +6,12 @@ exports.authenticateToken = (role) => {
     return (req, res, next) => {
         //console.log(role.indexOf("user"));
         
-        const authHeader = req.headers['authorization']
+        const authHeader = req.cookies.token || '';
+        
         const token = authHeader && authHeader.split(' ')[1]
         if (token == null) {
             return res.sendStatus(401)
         }
-
-
 
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, data) => {
             if (err) {
@@ -26,5 +25,4 @@ exports.authenticateToken = (role) => {
         })
     }
 }
-
 

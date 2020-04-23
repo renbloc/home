@@ -29,11 +29,9 @@ exports.org_signup = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
         const user = { username: req.body.username, password: hashedPassword }
         // push user 
-        db('users').insert(user).then((result) => {
-            console.log(result);
-            
-        })
-        res.status(201).send()
+        const new_user = db('users').insert(user)
+
+        res.status(201).send(new_user)
     } catch (error) {
         console.log(error);
         
