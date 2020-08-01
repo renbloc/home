@@ -9,6 +9,10 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Container, Avatar } from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
+import {useDispatch, useSelector} from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import {testAction} from '../../../actions/testAction'
 
 import Twitter from '../../files/twitter.png';
 import Amazon from '../../files/amazon.png';
@@ -77,19 +81,22 @@ const useStyles = makeStyles((theme) => ({
         background: 'transparent',
         boxShadow: 'none',
         borderBottomWidth: 1,
-        borderColor: '#dbdbdb',
-        borderBottomStyle: 'solid'
+        borderColor: '#EAEAEA',
+        borderBottomStyle: 'solid',
     },
     appbar2: {
         background: 'transparent',
         boxShadow: 'none',
         borderBottomWidth: 1,
-        borderColor: '#dbdbdb',
+        borderColor: '#EAEAEA',
         borderBottomStyle: 'solid',
         boxShadow: `0 10px 10px -5px #e3e3e3`,
     },
     centerer: {
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
+        paddingTop: 5,
+        paddingBottom: 5,
+        width: '60vw'
     },
     buttonMain: {
         color: '#878787',
@@ -128,16 +135,31 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    appbar_padder: {
+        paddingTop: 5,
+        paddingBottom: 5
+    },
+    container_centerer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 }));
 
 export default function Dashboard({ ...props }) {
+    const dispatch = useDispatch();
+    const state = useSelector(state => state.form)
     const classes = useStyles();
+
+    const fetchData = () => {
+        dispatch(testAction())
+    }
 
     return (
         <div className={classes.root}>
             <AppBar position="static" className={classes.appbar}>
-                    <Toolbar>
+                    <Toolbar className={classes.appbar_padder}>
                         <div className={classes.left_bar}>
                             <Typography className={classes.text_bar}>For Service Members</Typography>
                         </div>
@@ -149,13 +171,13 @@ export default function Dashboard({ ...props }) {
                     </Toolbar>
             </AppBar>
             <AppBar position="static" className={classes.appbar2}>
-                <Container>
+                <Container className={classes.container_centerer}>
                     <Toolbar className={classes.centerer}>
-                        <Button className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Overview</Typography></Button>
-                        <Button className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Overview</Typography></Button>
-                        <Button className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Overview</Typography></Button>
-                        <Button className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Overview</Typography></Button>
-                        <Button className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Overview</Typography></Button>
+                        <Button onClick={() => fetchData()} className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Overview</Typography></Button>
+                        <Button component={Link} to='dashboard_users' className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Users</Typography></Button>
+                        <Button component={Link} to='dashboard_mypage' className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>My Page</Typography></Button>
+                        <Button className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Progress</Typography></Button>
+                        <Button className={classes.buttonMain} startIcon={<MenuIcon></MenuIcon>}><Typography className={classes.buttonText}>Assets</Typography></Button>
                     </Toolbar>
                 </Container>
             </AppBar>

@@ -6,7 +6,7 @@ const db = require('./db')
 const addUser = async (req, res, next) => {
   const AccessToken = req.cookies.AccessToken
   const RefreshToken = req.cookies.RefreshToken
-  
+
   
   if (AccessToken && RefreshToken) {
     try {
@@ -23,6 +23,7 @@ const addUser = async (req, res, next) => {
       req.user = newTokens.user;
     }
   }
+  
   next();
 };
 
@@ -51,6 +52,8 @@ const refreshTokens = async (token, refreshToken) => {
   }
 
   const user = await db('users').where({ id: userId }).first()
+
+  // Add so that it checks if the user is blocked or not, if it is then it's a NO GO! <-----
   
 
   if (!user) {

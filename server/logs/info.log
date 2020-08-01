@@ -1,0 +1,38 @@
+{
+  message: 'Request recieved',
+  level: 'info',
+  transationId: 'one',
+  correlationId: 'one',
+  request: {},
+  operation: 'demoFunction',
+  timestamp: '2020-04-26T17:52:49.840Z'
+}
+{
+  message: 'Request recieved',
+  level: 'info',
+  transationId: 'one',
+  correlationId: 'one',
+  request: [Object: null prototype] {
+    username: 'sirzorre',
+    password: 'sirzorre',
+    email: 'sdcf@fda.com'
+  },
+  operation: 'demoFunction',
+  timestamp: '2020-04-26T17:53:53.927Z'
+}
+{
+  message: 'Error',
+  level: 'error',
+  transationId: 'one',
+  correlationId: 'one',
+  response: Error: data and salt arguments required
+      at Object.hash (/Users/stein/Documents/free_time/chri/server/node_modules/bcrypt/bcrypt.js:137:17)
+      at /Users/stein/Documents/free_time/chri/server/node_modules/bcrypt/promises.js:29:12
+      at new Promise (<anonymous>)
+      at Object.module.exports.promise (/Users/stein/Documents/free_time/chri/server/node_modules/bcrypt/promises.js:20:12)
+      at Object.hash (/Users/stein/Documents/free_time/chri/server/node_modules/bcrypt/bcrypt.js:133:25)
+      at exports.users_signup (/Users/stein/Documents/free_time/chri/server/api/controllers/user.js:58:45),
+  status: 500,
+  operation: 'demoFunction',
+  timestamp: '2020-04-26T17:54:51.106Z'
+}

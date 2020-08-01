@@ -4,6 +4,8 @@ const db = require('../helpers/db')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const TokenHelper = require('../helpers/token')
+const MailHelper = require('../helpers/mail')
+const LoggerHelper = require('../helpers/logger')
 
 let refreshTokens = []
 
@@ -12,14 +14,14 @@ let refreshTokens = []
 
 exports.users_logout = async (req, res, next) => {
     //refreshTokens = refreshTokens.filter(token => token !== req.body.token)
-    
+
     const AccessToken = req.cookies.AccessToken
     const RefreshToken = req.cookies.RefreshToken
     if (AccessToken && RefreshToken) {
         res.clearCookie("AccessToken");
         res.clearCookie("RefreshToken");
         res.send('Cookies are removed')
-        
+
     } else {
         res.status(404).send('You are not logged in')
     }
@@ -36,19 +38,91 @@ exports.refresh_tokens = async (req, res, next) => {
     })
 }
 
+exports.users_mail = async (req, res, next) => {
+    MailHelper.mailer().catch(error => {
+        console.log(error);
+
+    })
+    res.send('mail sent')
+}
+
 
 exports.users_signup = async (req, res, next) => {
     try {
+
+        // Check that all info needed is there and that it's correct formatted
+
+
+        // Then create User and use the id created to create the worker 
         const salt = await bcrypt.genSalt()
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
         const user = { username: req.body.username, email: req.body.email, password: hashedPassword }
         // push user 
-        await db('users').insert(user)
+        const userId = await db('users').insert(user).returning('id')
+
+
+        // Give worker all the data he needs...!
+        const worker = { refId: userId[0] }
+
+
+        await db('worker').insert(worker)
+        
+
+        // LoggerHelper.log({
+        //     message: 'Request recieved',
+        //     level: 'info',
+        //     transationId: 'one',
+        //     correlationId: 'one',
+        //     request: req.body,
+        //     operation: 'demoFunction'
+        // });
 
         res.status(200).send({
             message: 'User was created'
         })
     } catch (error) {
+
+        // LoggerHelper.log({
+        //     message: 'Error',
+        //     level: 'error',
+        //     transationId: 'one',
+        //     correlationId: 'one',
+        //     response: error, status: 500,
+        //     operation: 'demoFunction'
+        // });
+
+        res.status(500).send({
+            message: 'User was not created'
+        })
+    }
+}
+
+exports.org_signup = async (req, res, next) => {
+    try {
+
+        // Check that all info needed is there and that it's correct formatted
+
+
+        // Then create User and use the id created to create the worker 
+        const salt = await bcrypt.genSalt()
+        const hashedPassword = await bcrypt.hash(req.body.password, salt)
+        const user = { username: req.body.username, email: req.body.email, password: hashedPassword }
+        // push user 
+        const userId = await db('users').insert(user).returning('id')
+
+
+        // Give organisation all the data he needs...!
+        const organisation = { refId: userId[0] }
+
+
+        await db('organisation').insert(organisation)
+
+        res.status(200).send({
+            message: 'User was created'
+        })
+    } catch (error) {
+        console.log(error);
+
         res.status(500).send({
             message: 'User was not created'
         })
@@ -78,16 +152,16 @@ exports.users_login = async (req, res, next) => {
             refreshTokens.push(refreshToken)
 
             //res.json({ accessToken: accessToken, refreshToken: refreshToken })
-            
-            res.cookie('AccessToken', accessToken, { expire: 360000 + Date.now(), secure: false, httpOnly: true})
-            res.cookie('RefreshToken', refreshToken, { expire: 360000 + Date.now(), secure: false, httpOnly: true})
+
+            res.cookie('AccessToken', accessToken, { expire: 360000 + Date.now(), secure: false, httpOnly: true })
+            res.cookie('RefreshToken', refreshToken, { expire: 360000 + Date.now(), secure: false, httpOnly: true })
             res.status(200).send('Cookie is set')
         } else {
             res.send('Not allowed')
         }
     } catch (error) {
         console.log(error);
-        
+
         res.status(500).send({
             error: error
         })
@@ -100,7 +174,10 @@ exports.users_users = async (req, res, next) => {
         const users = await db('users')
         res.status(200).send(users)
 
+
     } catch (error) {
+        console.log(error);
+        
         res.status(500).send({
             error: error
         })
@@ -127,9 +204,9 @@ exports.users_forgot = async (req, res, next) => {
 
     } catch (error) {
         console.log(error);
-        
+
         res.status(500).send({
-            
+
             error: error
         })
     }
@@ -159,7 +236,7 @@ exports.update_password = async (req, res, next) => {
 
     } catch (error) {
         console.log(error);
-        
+
         res.status(500).send({
             error: error
         })

@@ -5,7 +5,7 @@ exports.up = function(knex) {
         t.string('username').notNull();
         t.string('email').notNull();
         t.string('password').notNull();
-        t.string('role').notNull().defaultTo("user");
+        t.string('role').notNull().defaultTo('user');
         
     });
 };

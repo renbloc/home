@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import Twitter from '../../files/twitter.png';
 import Amazon from '../../files/amazon.png';
@@ -110,20 +111,33 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Landing({ ...props }) {
     const classes = useStyles();
+    const state = useSelector(state => state.auth)
 
     return (
         <div className={classes.root}>
             <AppBar position="static" className={classes.appbar}>
                 <Container>
                     <Toolbar className={classes.centerer}>
-                        <img className={classes.image_bar} src={Bower}/>
+                        <img className={classes.image_bar} src={Bower} />
                         <Button component={Link} to='how' className={classes.buttonSecond}><Typography className={classes.buttonText}>How it works</Typography></Button>
                         <Button component={Link} to='about' className={classes.buttonSecond}><Typography className={classes.buttonText}>About</Typography></Button>
-                        <Button component={Link} to='dashboard' className={classes.buttonSecond}><Typography className={classes.buttonText}>Dashboard</Typography></Button>
+                        {
+                            state.isAuthenticated ?
+                                <Button component={Link} to='dashboard_users' className={classes.buttonSecond}><Typography className={classes.buttonText}>Dashboard</Typography></Button>
+                                :
+                                null
+                        }
+
                         <Button component={Link} to='companies' className={classes.buttonSecond}><Typography className={classes.buttonText}>Companies</Typography></Button>
                         <Button component={Link} to='faq' className={classes.buttonSecond}><Typography className={classes.buttonText}>FAQ</Typography></Button>
                         <Button component={Link} to='improve' className={classes.buttonSecond}><Typography className={classes.buttonText}>Improve</Typography></Button>
-                        <Button component={Link} to='signin' variant="outlined" className={classes.buttonMain}><Typography className={classes.buttonText}>Log in</Typography></Button>
+                        {
+                            state.isAuthenticated ?
+                                <Button component={Link} to='signin' variant="outlined" className={classes.buttonMain}><Typography className={classes.buttonText}>Log out</Typography></Button>
+                                :
+                                <Button component={Link} to='signin' variant="outlined" className={classes.buttonMain}><Typography className={classes.buttonText}>Log in</Typography></Button>
+                        }
+
                     </Toolbar>
                 </Container>
             </AppBar>

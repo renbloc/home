@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,7 +13,10 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import CookieConsent from "react-cookie-consent";
+import { useDispatch, useSelector } from 'react-redux';
+import {Redirect} from "react-router-dom";
+
+import { authAction } from '../../../actions/authAction'
 
 function Copyright() {
   return (
@@ -49,10 +53,52 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const state = useSelector(state => state.form)
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [helperText, setHelperText] = useState('');
+  const [error, setError] = useState(false);
+  const [toHome, setHome] = useState(false);
+
+  useEffect(() => {
+    if (username.trim() && password.trim()) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [username, password]);
+
+  const handleLogin = () => {
+
+
+    dispatch(authAction({
+      username: username,
+      password: password
+    })).then(() => {
+      setHome(true)
+
+    }).catch((error) => {
+      console.log('did not login');
+      
+    })
+
+
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.keyCode === 13 || e.which === 13) {
+      isButtonDisabled || handleLogin();
+    }
+  };
 
   return (
-
     <Container component="main" maxWidth="xs">
+
+      {toHome ? <Redirect to="/" /> : null}
+
       <CssBaseline />
 
       <div className={classes.paper}>
@@ -74,6 +120,8 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={(e) => setUsername(e.target.value)}
+            onKeyPress={(e) => handleKeyPress(e)}
           />
           <TextField
             variant="outlined"
@@ -84,18 +132,22 @@ export default function SignIn() {
             label="Password"
             type="password"
             id="password"
+            helperText={helperText}
             autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyPress={(e) => handleKeyPress(e)}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => handleLogin()}
+            disabled={isButtonDisabled}
           >
             Sign In
           </Button>

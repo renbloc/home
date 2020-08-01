@@ -6,8 +6,8 @@ import CheckedIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles((theme) => ({
     header_text: {
-        paddingTop: '10vh',
-        paddingBottom: 60,
+        paddingTop: '3vh',
+        paddingBottom: '1vh',
         fontSize: 24,
         fontWeight: 500,
         textAlign: 'left'
@@ -92,7 +92,7 @@ export default function Test() {
                     Welcome back you twat!
                 </Typography>
 
-                <Grid container spacing={6}>
+                <Grid container spacing={4}>
                     <Grid item xs={4}>
                         <Paper className={classes.paper}>
                             <div>
@@ -121,7 +121,7 @@ export default function Test() {
                         </Paper>
                     </Grid>
                 </Grid>
-                <Grid container spacing={6}>
+                <Grid container spacing={4}>
                     <Grid item xs={8}>
                         <Paper className={classes.paper2}>
                         </Paper>

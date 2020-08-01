@@ -4,20 +4,21 @@ import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core';
+import { Provider } from "react-redux";
+import { PersistGate } from 'redux-persist/integration/react';
 
-import theme_data from './theme/theme';
+import { store, persistor } from "./store";
 
-const theme = createMuiTheme(theme_data)
 
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>,
   document.getElementById('root')
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+
 serviceWorker.unregister();

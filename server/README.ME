@@ -1,9 +1,37 @@
 Hello
 
 Good info about knex: https://www.youtube.com/watch?v=ipAH7lMfq7k
+Good info about Redis: https://www.youtube.com/watch?v=p868I9I7UVM
+If we change to Sessions: https://www.youtube.com/watch?v=OH6Z0dJ_Huk
+
+
+Morgan setup for IP-adresses through nginx:
+    - http://dev.rdybarra.com/2016/06/23/Production-Logging-With-Morgan-In-Express/
 
 Data table changes with Knex:
     - Use the prediefined unmigrate then migrate to update schemas. 
 
 
 Need to be able to update schema without removing data: 
+
+
+Security: 
+    - Could implement blacklist but if they got the tokens then they'd be able to do stuff before you logged out...
+
+
+Features: 
+    - DB models 
+        - Relations between models?? Is that needed... 
+            - Ex Organisation has a relation to a potential job they create. Can do it so a user if it's a org has a link to a organisation.
+    - Auth for organisations... More or less the same 
+    - Improve authorization with more levels
+    - Setup automatic email sendout 
+    - Improve auth by looking around at other examples 
+    - Route to change your data 
+    - Route to delete
+    - Route to get your own data
+
+Potentail features:
+    - Listener if a user is created then info will be sent out 
+    - Upload picture with the profile? 
+
